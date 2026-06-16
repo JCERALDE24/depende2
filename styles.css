@@ -90,6 +90,19 @@ body{
 .intro .cta.large{opacity:0;transform:translateY(14px);animation-name:introIn;animation-duration:900ms;animation-timing-function:cubic-bezier(.22,.9,.38,1);animation-fill-mode:both;animation-delay:320ms}
 .intro .hint{opacity:0;transform:translateY(14px);animation-name:introIn;animation-duration:900ms;animation-timing-function:cubic-bezier(.22,.9,.38,1);animation-fill-mode:both;animation-delay:520ms}
 
+/* Intro Play button styling */
+#introPlay{background:linear-gradient(90deg,#ff6fb5,#6b3cff);color:#fff;border:none;padding:12px 18px;border-radius:12px;font-size:16px;box-shadow:0 12px 36px rgba(107,60,255,0.18);cursor:pointer;display:inline-flex;align-items:center;gap:10px;margin-left:12px}
+#introPlay::before{content:"🎵";font-size:16px;display:inline-block}
+#introPlay:focus{outline:3px solid rgba(255,255,255,0.08)}
+#introPlay:hover{transform:translateY(-3px);transition:transform 160ms}
+
+/* Make intro buttons wrap nicely on small screens */
+@media (max-width:520px){
+  .intro-content.envelope{padding:22px}
+  #introPlay{margin-left:0;margin-top:10px}
+  .intro-content.envelope .cta.large, #introPlay{display:block;width:100%}
+}
+
 /* aurora overlay using CSS variables for cursor-driven lighting */
 .aurora{
   position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;opacity:0.55;

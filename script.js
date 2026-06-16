@@ -489,6 +489,37 @@ introOpen && introOpen.addEventListener('click', async ()=>{
   startJourney();
 });
 
+// Intro Play button: explicit user gesture to start music from the intro overlay
+const introPlay = document.getElementById('introPlay');
+if(introPlay){
+  introPlay.addEventListener('click', async (e)=>{
+    e.preventDefault();
+    try{
+      if(audio){
+        audio.currentTime = 0;
+        await audio.play();
+        audio.volume = (volume && volume.value) ? volume.value : 0.8;
+        showAudioStatus('Playing');
+        try{ introPlay.remove(); }catch(e){}
+      }
+      // open the intro (same as clicking the main entry button)
+      try{ if(introOpen) introOpen.click(); }catch(e){}
+    }catch(err){
+      console.warn('Intro Play blocked:', err);
+      showAudioStatus('Play blocked — opening site; use Play in the music controls if needed.');
+      // open the site even if play was blocked
+      try{ if(introOpen) introOpen.click(); }catch(e){}
+      // ensure a manual fallback button exists in the music player area
+      try{
+        if(!document.getElementById('audioManualBtn')){
+          const mp = document.getElementById('musicPlayer');
+          if(mp){ const btn = document.createElement('button'); btn.id='audioManualBtn'; btn.className='cta small'; btn.textContent='Play music'; btn.style.marginLeft='10px'; mp.appendChild(btn); btn.addEventListener('click', ()=>{ audio.play().catch(()=>{}); }); }
+        }
+      }catch(e){}
+    }
+  });
+}
+
 // safety: if the user can't interact with the intro (stuck/overlay issues), auto-reveal after a short delay
 // NOTE: auto-reveal disabled so the experience waits for user's explicit click
 // setTimeout(()=>{ try{ forceReveal(); }catch(e){} }, 1800);
