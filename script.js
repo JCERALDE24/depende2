@@ -50,6 +50,37 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // normal startup behavior
 });
 
+// Audio diagnostics and manual control
+try{
+  if(audio){
+    // expose audio loading errors in console
+    audio.addEventListener('error', ()=>{ console.error('Audio element error:', audio.error); try{ showAudioStatus('Audio failed to load (see console).'); }catch(e){} });
+    audio.addEventListener('canplay', ()=>{ console.info('Audio can play'); try{ showAudioStatus('Audio loaded. Use Play to start.'); }catch(e){} });
+    // create a persistent Play button so user can always manually start music
+    const mp = document.getElementById('musicPlayer');
+    if(mp && !document.getElementById('audioManualBtn')){
+      const playBtn = document.createElement('button'); playBtn.id = 'audioManualBtn'; playBtn.className = 'cta small'; playBtn.textContent = 'Play music'; playBtn.style.marginLeft = '10px';
+      mp.appendChild(playBtn);
+      playBtn.addEventListener('click', ()=>{
+        audio.play().then(()=>{
+          console.info('Audio playing'); try{ showAudioStatus('Playing'); }catch(e){}
+        }).catch(err=>{
+          console.warn('Play failed:', err); try{ showAudioStatus('Play blocked — interact with the page or check console.'); }catch(e){}
+        });
+      });
+    }
+  }
+}catch(e){console.warn('Audio diagnostic setup failed', e)}
+
+function showAudioStatus(msg){
+  try{
+    const mp = document.getElementById('musicPlayer'); if(!mp) return;
+    let s = document.getElementById('audioStatus');
+    if(!s){ s = document.createElement('div'); s.id = 'audioStatus'; s.style.fontSize='12px'; s.style.opacity=0.9; s.style.marginTop='6px'; mp.appendChild(s); }
+    s.textContent = msg;
+  }catch(e){}
+}
+
 /* ==========================
    Canvas: Galaxy & stars
    ========================== */
