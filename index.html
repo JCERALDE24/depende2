@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>A Heartfelt Confession</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600;700&family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Galaxy canvas background -->
+  <canvas id="galaxy"></canvas>
+  <div class="stars-bg" aria-hidden="true"></div>
+
+  <!-- Nebula layers (CSS-driven for performance) -->
+  <div class="nebula nebula-1"></div>
+  <div class="nebula nebula-2"></div>
+  <div class="nebula nebula-3"></div>
+
+  <!-- Floating petals/flowers container -->
+  <div id="flora" aria-hidden="true"></div>
+
+  <!-- Intro splash shown first with surprise button -->
+  <div id="intro" class="intro" role="dialog" aria-modal="true">
+    <div class="intro-content envelope">
+      <h2 class="handwritten">for someone who deserves more than they realize</h2>
+      <button id="introOpen" class="cta large">Click me to open</button>
+      <p class="hint">click to enter the dream</p>
+    </div>
+  </div>
+
+  <noscript>
+    <style>
+      .intro{display:flex}
+      .pre-hidden{opacity:1 !important;pointer-events:auto !important}
+    </style>
+    <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000;z-index:10000;color:#fff">This experience requires JavaScript to run. Please enable JavaScript and reload.</div>
+  </noscript>
+
+  <!-- Main content -->
+  <main class="wrap pre-hidden">
+    <section class="hero">
+      <div id="scene" class="scene">
+        <div id="motorcycle" class="motorcycle" aria-hidden="true">
+          <!-- simplified silhouette motorcycle SVG for cinematic feel -->
+          <svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet" class="motor-svg">
+            <defs>
+              <linearGradient id="bikeGrad" x1="0" x2="1">
+                <stop offset="0%" stop-color="#111428"/>
+                <stop offset="100%" stop-color="#1b2540"/>
+              </linearGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <g filter="url(#glow)">
+              <rect x="120" y="200" width="500" height="12" rx="6" fill="#0b1020" opacity="0.9"/>
+              <path d="M150 240 C200 200, 300 180, 360 200 C420 220, 520 220, 640 200 L700 200" fill="none" stroke="url(#bikeGrad)" stroke-width="10" stroke-linecap="round"/>
+              <!-- headlights -->
+              <circle cx="660" cy="190" r="8" fill="#ffdca8" opacity="0.0" class="headlight" />
+            </g>
+          </svg>
+        </div>
+        <div class="glass-card" id="glassCard">
+          <div class="confession">
+            <p id="typewriter" class="typewriter" data-text='[
+              "I hope one day you truly understand how much you deserve.",
+              "You deserve a love that feels safe, gentle, and genuine.",
+              "You deserve to be listened to, appreciated, and cared for.",
+              "You deserve honesty, respect, loyalty, and a connection that feels effortless.",
+              "If I could give you one thing in life, it would be the ability to see yourself through my eyes."
+            ]'>
+            </p>
+          </div>
+
+          <div class="controls">
+            <div class="music-player" id="musicPlayer">
+              <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8">
+              <audio id="audio" preload="auto">
+                <!-- Update this src to a valid file or URL. Clicking the entry button will start playback. -->
+                <source src="Adie feat. Chrstn - Tinatangi (Official Audio) [ishz695Af0c].mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="continue-wrap">
+              <button id="continueBtn" class="cta" disabled>continue</button>
+              <div id="countdown" class="countdown">15</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Surprise / final message overlay -->
+    <div id="finalOverlay" class="overlay hidden" role="dialog" aria-hidden="true">
+      <div class="final-message">
+        <p class="big">you deserve to be loved, cherished, respected, and treated right. no matter what happens, never forget how special you are.</p>
+        <p class="cinematic">if i could give you one thing in life, it would be the ability to see yourself through my eyes, because then you would know how truly beautiful you are.</p>
+        <button id="closeFinal" class="cta small">close</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- cursor trail container -->
+  <div id="cursorTrail" aria-hidden="true"></div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
