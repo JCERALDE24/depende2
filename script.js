@@ -291,7 +291,12 @@ function surprise(){
 
 // If there was an old `openHeart` element, ensure we don't try to bind to it.
 if(typeof openHeart !== 'undefined' && openHeart){
-  openHeart.addEventListener('click', ()=>{ if(audio){ try{ audio.currentTime=0; audio.volume = volume.value; audio.play().catch(()=>{}); }catch(e){} } surprise();});
+  openHeart.addEventListener('click', ()=>{ if(audio){ try{ audio.currentTime=0; audio.volume = volume.value; audio.play().catch((err)=>{
+        console.warn('Audio play blocked:', err);
+        try{ audio.controls = true; }catch(e){}
+        const existing = document.getElementById('audioPlayBtn');
+        if(!existing){ const btn = document.createElement('button'); btn.id='audioPlayBtn'; btn.className='cta small'; btn.textContent='Play music'; btn.style.marginLeft='12px'; const mp = document.getElementById('musicPlayer'); if(mp) mp.appendChild(btn); btn.addEventListener('click', ()=>{ audio.play().then(()=>{ try{ btn.remove(); }catch(e){}; audio.controls = true; }).catch(()=>{}); }); }
+      }); }catch(e){} } surprise();});
 }
 
 closeFinal && closeFinal.addEventListener('click', ()=>{finalOverlay.classList.add('hidden'); finalOverlay.setAttribute('aria-hidden','true');});
@@ -421,7 +426,16 @@ introOpen && introOpen.addEventListener('click', async ()=>{
   if(mainWrap){ mainWrap.classList.remove('pre-hidden'); mainWrap.style.opacity=1; mainWrap.style.pointerEvents='auto'; }
   try{ addFrontEffects(); }catch(e){}
   // start ambient audio (fade in)
-  try{ audio.currentTime = 0; audio.play().catch(()=>{}); audio.volume = 0; fadeAudioTo(0.65, 1800); }catch(e){}
+  try{
+    audio.currentTime = 0;
+    audio.play().catch((err)=>{
+      console.warn('Audio play blocked:', err);
+      try{ audio.controls = true; }catch(e){}
+      const existing = document.getElementById('audioPlayBtn');
+      if(!existing){ const btn = document.createElement('button'); btn.id='audioPlayBtn'; btn.className='cta small'; btn.textContent='Play music'; btn.style.marginLeft='12px'; const mp = document.getElementById('musicPlayer'); if(mp) mp.appendChild(btn); btn.addEventListener('click', ()=>{ audio.play().then(()=>{ try{ btn.remove(); }catch(e){}; audio.controls = true; }).catch(()=>{}); }); }
+    });
+    audio.volume = 0; fadeAudioTo(0.65, 1800);
+  }catch(e){}
   // reveal the star canvas and start shooting stars
   try{ if(canvas) canvas.style.display = ''; }catch(e){}
   // show and animate the subtle stars-bg now that user has entered
